@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		SunJaasKerberosClient client = new SunJaasKerberosClient();
 		client.setDebug(true);
 		provider.setKerberosClient(client);
-		provider.setUserDetailsService(ldapUserDetailsService());
+		provider.setUserDetailsService(dummyUserDetailsService());
 		return provider;
 	}
 
@@ -86,7 +86,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public KerberosServiceAuthenticationProvider kerberosServiceAuthenticationProvider() throws Exception {
 		KerberosServiceAuthenticationProvider provider = new KerberosServiceAuthenticationProvider();
 		provider.setTicketValidator(sunJaasKerberosTicketValidator());
-		provider.setUserDetailsService(ldapUserDetailsService());
+//		provider.setUserDetailsService(ldapUserDetailsService());
+		provider.setUserDetailsService(dummyUserDetailsService());
 		return provider;
 	}
 
@@ -98,37 +99,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		ticketValidator.setDebug(true);
 		return ticketValidator;
 	}
-
+	
 	@Bean
-	public KerberosLdapContextSource kerberosLdapContextSource() throws Exception {
-		KerberosLdapContextSource contextSource = new KerberosLdapContextSource(adServer);
-//		contextSource.setUserDn(servicePrincipal);
-//		contextSource.setPassword("L3c0m@2017");
-		contextSource.setLoginConfig(loginConfig());
-		return contextSource;
+	public DummyUserDetailsService dummyUserDetailsService() {
+		return new DummyUserDetailsService();
 	}
 
-	@Bean
-	public SunJaasKrb5LoginConfig loginConfig() throws Exception {
-		SunJaasKrb5LoginConfig loginConfig = new SunJaasKrb5LoginConfig();
-		loginConfig.setKeyTabLocation(new FileSystemResource(keytabLocation));
-		loginConfig.setServicePrincipal(servicePrincipal);
-		loginConfig.setDebug(true);
-//		loginConfig.setUseTicketCache(false);
-		loginConfig.setIsInitiator(true);
-		loginConfig.afterPropertiesSet();
-		return loginConfig;
-	}
-
-	@Bean
-	public LdapUserDetailsService ldapUserDetailsService() throws Exception {
+//	@Bean
+//	public KerberosLdapContextSource kerberosLdapContextSource() throws Exception {
+//		KerberosLdapContextSource contextSource = new KerberosLdapContextSource(adServer);
+////		contextSource.setUserDn(servicePrincipal);
+////		contextSource.setPassword("L3c0m@2017");
+//		contextSource.setLoginConfig(loginConfig());
+//		return contextSource;
+//	}
+//
+//	@Bean
+//	public SunJaasKrb5LoginConfig loginConfig() throws Exception {
+//		SunJaasKrb5LoginConfig loginConfig = new SunJaasKrb5LoginConfig();
+//		loginConfig.setKeyTabLocation(new FileSystemResource(keytabLocation));
+//		loginConfig.setServicePrincipal(servicePrincipal);
+//		loginConfig.setDebug(true);
+////		loginConfig.setUseTicketCache(false);
+//		loginConfig.setIsInitiator(true);
+//		loginConfig.afterPropertiesSet();
+//		return loginConfig;
+//	}
+//
+//	@Bean
+//	public LdapUserDetailsService ldapUserDetailsService() throws Exception {
+////		FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch(ldapSearchBase, ldapSearchFilter,
+////				(LdapContextSource) contextSource);
 //		FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch(ldapSearchBase, ldapSearchFilter,
-//				(LdapContextSource) contextSource);
-		FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch(ldapSearchBase, ldapSearchFilter,
-				kerberosLdapContextSource());
-		LdapUserDetailsService service = new LdapUserDetailsService(userSearch);
-		service.setUserDetailsMapper(new LdapUserDetailsMapper());
-		return service;
-	}
+//				kerberosLdapContextSource());
+//		LdapUserDetailsService service = new LdapUserDetailsService(userSearch);
+//		service.setUserDetailsMapper(new LdapUserDetailsMapper());
+//		return service;
+//	}
 
 }
