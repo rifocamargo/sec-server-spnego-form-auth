@@ -1,0 +1,23 @@
+server:
+    port: 8080
+#app:
+#    service-principal: HTTP/client.edt.org@EDT.ORG
+#    keytab-location: /opt/app/client.keytab
+#    ldap-search-base: dc=edt,dc=org
+#    ldap-search-filter: mail={0}
+#    ad-server: ldap://ldap.edt.org
+app:
+    service-principal: HTTP/ricardo.local@RICARDO.LOCAL
+    keytab-location: C:\\Users\\Administrator\\user01.keytab
+    ldap-search-base: dc=ricardo,dc=local
+    ldap-search-filter: mail={0}
+    ad-server: ldap://ricardo.local
+#spring:
+#  ldap:
+#    urls: 
+#      ldap://ldap.edt.org
+#    base: dc=edt,dc=org
+#    username: admin/admin
+#    password: admin
+#    custom:
+#      user-dn-patterns: mail
